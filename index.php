@@ -21,7 +21,7 @@
     <input id="dir" type="text" style="width:400px" />
 </div>
 
-<div style="width:420px;  float:left; ">
+<div style="  float:left; ">
     <table class="table">
         <tr>
             <th></th>
