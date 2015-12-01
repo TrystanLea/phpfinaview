@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family:arial;
+}
+
+.header {
+    padding:10px;
+    background-color:#eee;
+}
+
+.table {
+    font-size:14px;
+    width:200px;
+}
+
+.table td {
+    padding:4px;
+}
+
+.table th {
+    padding:4px;
+    background-color:#eee;
+}
+
+.table tr:nth-child(2n+2) {background: #eee}
