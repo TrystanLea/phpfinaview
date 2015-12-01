@@ -21,11 +21,13 @@
     <input id="dir" type="text" style="width:400px" />
 </div>
 
-<div style="width:250px;  float:left; ">
+<div style="width:420px;  float:left; ">
     <table class="table">
         <tr>
             <th></th>
-            <th>Value</th>
+            <th></th>
+            <th></th>
+            <th>Val</th>
             <th>Size</th>
             <th>L</th>
             <th>R</th>
@@ -102,7 +104,31 @@ function load_dir(dir)
     for (z in feeds) {
         out += "<tr>";
         out += "<td>"+feeds[z].feedid+".dat</td>";
-        out += "<td style='text-align:center; color:#666'>"+(feeds[z].lastvalue).toFixed(2)+"</td>";
+        out += "<td style='text-align:center; color:#666'>"+feeds[z].interval+"s</td>";
+        
+        var date = new Date();
+        var thisyear = date.getFullYear()-2000;
+        
+        var date = new Date(feeds[z].start*1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = date.getFullYear()-2000;
+        var month = months[date.getMonth()];
+        var date = date.getDate();
+        out += "<td style='text-align:center; color:#666;'>"+date+" "+month;
+        if (thisyear!=year) out += " "+year;
+        
+        out += "&#8594;";
+        
+        var date = new Date((feeds[z].start+(feeds[z].npoints*feeds[z].interval))*1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = date.getFullYear()-2000;
+        var month = months[date.getMonth()];
+        var date = date.getDate();
+        out += date+" "+month;
+        if (thisyear!=year) out += " "+year;
+        out +="</td>";
+                
+        out += "<td style='text-align:center; color:#666'>"+list_format_value(feeds[z].lastvalue)+"</td>";
         
         if (feeds[z].size<1024*100) {
             feeds[z].size = (feeds[z].size/1024).toFixed(1)+"kb";
@@ -205,5 +231,15 @@ $('#placeholder').bind("plotselected", function (event, ranges) {
     view.end = ranges.xaxis.to;
     draw();
 });
+
+function list_format_value(value)
+{
+    if (value>=10) value = (1*value).toFixed(1);
+    if (value>=100) value = (1*value).toFixed(0);
+    if (value<10) value = (1*value).toFixed(2);
+    if (value<=-10) value = (1*value).toFixed(1);
+    if (value<=-100) value = (1*value).toFixed(0);
+    return value;
+}
 
 </script>

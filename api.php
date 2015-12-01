@@ -27,9 +27,13 @@
                 if (strpos($item,".dat")!==false) {
                     $parts = explode(".",$item);
                     $feedid = (int) $parts[0];
+                    $meta = $phpfina->get_meta($feedid);
                     $timeval = $phpfina->lastvalue($feedid);
                     $feeds[] = array(
                         "feedid"=>$feedid, 
+                        "interval"=>$meta->interval,
+                        "start"=>$meta->start_time,
+                        "npoints"=>$phpfina->get_npoints($feedid),
                         "lastvalue"=>$timeval["value"],
                         "size"=>$phpfina->get_feed_size($feedid)
                     );
