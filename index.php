@@ -21,10 +21,12 @@
     <input id="dir" type="text" style="width:400px" />
 </div>
 
-<div style="width:200px;  float:left; ">
+<div style="width:250px;  float:left; ">
     <table class="table">
         <tr>
             <th></th>
+            <th>Value</th>
+            <th>Size</th>
             <th>L</th>
             <th>R</th>
         </tr>
@@ -83,17 +85,14 @@ load_dir(dir);
 function load_dir(dir)
 {
     feeds = [];
-    feeds = [];
     $.ajax({                                      
         url: path+"api.php?q=scandir&dir="+dir,
         async: false,
         dataType: "json",
         success: function(data) {
             for (z in data) {
-                if (data[z].indexOf(".dat")!=-1) {
-                    var feedid = parseInt(data[z].split(".")[0]);
-                    feeds.push({feedid:feedid, yaxis:0});
-                }
+                data[z].yaxis = 0;
+                feeds.push(data[z]);
             }
             feeds.sort(function(a, b){return a.feedid-b.feedid});
         }
@@ -103,6 +102,17 @@ function load_dir(dir)
     for (z in feeds) {
         out += "<tr>";
         out += "<td>"+feeds[z].feedid+".dat</td>";
+        out += "<td style='text-align:center; color:#666'>"+(feeds[z].lastvalue).toFixed(2)+"</td>";
+        
+        if (feeds[z].size<1024*100) {
+            feeds[z].size = (feeds[z].size/1024).toFixed(1)+"kb";
+        } else if (feeds[z].size<1024*1024) {
+            feeds[z].size = Math.round(feeds[z].size/1024)+"kb";
+        } else if (feeds[z].size>=1024*1024) {
+            feeds[z].size = Math.round(feeds[z].size/(1024*1024))+"Mb";
+        }
+        out += "<td style='text-align:center; color:#666'>"+feeds[z].size+"</td>";
+        
         out += "<td style='text-align:center'><input class='axischeckbox' feedid="+feeds[z].feedid+" axis=L type='checkbox'/ ></td>";
         out += "<td style='text-align:center'><input class='axischeckbox' feedid="+feeds[z].feedid+" axis=R type='checkbox'/ ></td>";
         out += "</td>";

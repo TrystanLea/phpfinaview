@@ -5,7 +5,7 @@
 
 class PHPFina
 {
-    private $dir = "/var/lib/phpfina/";
+    public $dir = "/var/lib/phpfina/";
     private $log;
     private $writebuffer = array();
     private $lastvalue_cache = array();
@@ -15,9 +15,8 @@ class PHPFina
      *
      * @api
     */
-    public function __construct($settings)
+    public function __construct()
     {
-        if (isset($settings['datadir'])) $this->dir = $settings['datadir'];
         $this->log = new EmonLogger(__FILE__);
     }
 
